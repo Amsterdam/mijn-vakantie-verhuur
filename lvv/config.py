@@ -14,7 +14,7 @@ def get_lvv_key():
 
 
 def get_lvv_api_host():
-    return os.getenv("LVV_API_HOST")
+    return os.getenv("LVV_HOST")
 
 
 # def get_key():
