@@ -37,4 +37,3 @@ class RequestsMock:
                 return ResponseMock(fh.read())
         else:
             raise Exception(f"No fixture found for url: {url}")
-

@@ -43,4 +43,3 @@ class LvvConnection:
         registration_numbers = self._bsn_to_registration_numbers(bsn)
         registrations = self._get_registrations(registration_numbers)
         return registrations
-

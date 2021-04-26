@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch
 
 from tma_saml import FlaskServerTMATestCase
@@ -17,8 +18,8 @@ class HealthTest(FlaskServerTMATestCase):
         self.assertEqual(response.data, b"OK")
 
 
+@patch.dict(os.environ, {"LVV_API_HOST": "http://localhost"})
 @patch("lvv.api.lvv.lvv_connection.requests", RequestsMock)
-@patch("lvv.server.get_lvv_api_host", lambda: "http://localhost")
 @patch("lvv.server.get_tma_certificate", lambda: server_crt)
 class ApiTest(FlaskServerTMATestCase):
     TEST_BSN = "111222333"
@@ -29,5 +30,19 @@ class ApiTest(FlaskServerTMATestCase):
     def test_get(self):
         SAML_HEADERS = self.add_digi_d_headers(self.TEST_BSN)
 
-        response = self.client.get("/vakantieverhuur/get", headers=SAML_HEADERS)
-        self.assertTrue(response)
+        response = self.client.get("/vakantie-verhuur/get", headers=SAML_HEADERS)
+        self.assertEqual(response.status_code, 200)
+
+        reg_numbers = [i['registrationNumber'] for i in response.json['content']]
+        self.assertEqual(reg_numbers, ['AAAA AAAA AAAA AAAA AAAA'])
+
+    def test_invalid_bsn(self):
+        SAML_HEADERS = self.add_digi_d_headers("1")
+        response = self.client.get("/vakantie-verhuur/get", headers=SAML_HEADERS)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json, {'message': 'Invalid BSN', 'status': 'ERROR'})
+
+    def test_no_saml(self):
+        response = self.client.get("/vakantie-verhuur/get")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json, {'message': 'Missing SAML token', 'status': 'ERROR'})

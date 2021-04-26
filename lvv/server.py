@@ -3,8 +3,7 @@ import logging
 import sentry_sdk
 from flask import Flask, request
 from sentry_sdk.integrations.flask import FlaskIntegration
-from tma_saml import get_digi_d_bsn, InvalidBSNException, SamlVerificationException, get_e_herkenning_attribs, \
-    HR_KVK_NUMBER_KEY
+from tma_saml import get_digi_d_bsn, InvalidBSNException, SamlVerificationException
 
 from lvv.api.lvv.lvv_connection import LvvConnection
 from lvv.config import get_sentry_dsn, get_lvv_api_host, get_lvv_key, get_tma_certificate
