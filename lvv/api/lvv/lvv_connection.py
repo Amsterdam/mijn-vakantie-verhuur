@@ -22,6 +22,7 @@ class LvvConnection:
         return response
 
     def _transform(self, data):
+        """ Transform a single registration to the frontend format. """
         return data
 
     def _bsn_to_registration_numbers(self, bsn):
@@ -30,15 +31,16 @@ class LvvConnection:
         return [r['registrationNumber'] for r in response.json()]
 
     def _get_registrations(self, reg_numbers):
+        registrations = []
         for reg_num in reg_numbers:
             url = f"{self.api_url}/ext/api/Registrations/{reg_num}"
             response = self._get(url)
             data = response.json()
-            print("data", data)
-
+            registrations.append(self._transform(data))
+        return registrations
 
     def get_data(self, bsn):
         registration_numbers = self._bsn_to_registration_numbers(bsn)
         registrations = self._get_registrations(registration_numbers)
-
+        return registrations
 

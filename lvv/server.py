@@ -6,6 +6,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from tma_saml import get_digi_d_bsn, InvalidBSNException, SamlVerificationException, get_e_herkenning_attribs, \
     HR_KVK_NUMBER_KEY
 
+from lvv.api.lvv.lvv_connection import LvvConnection
 from lvv.config import get_sentry_dsn, get_lvv_api_host, get_lvv_key, get_tma_certificate
 
 logger = logging.getLogger(__name__)
@@ -44,55 +45,23 @@ def get_bsn_from_request(request):
     return bsn
 
 
-def get_kvk_number_from_request(request):
-    """
-    Get the KVK number from the request headers.
-    """
-    # Load the TMA certificate
-    tma_certificate = get_tma_certificate()
-
-    # Decode the BSN from the request with the TMA certificate
-    attribs = get_e_herkenning_attribs(request, tma_certificate)
-    kvk = attribs[HR_KVK_NUMBER_KEY]
-    return kvk
-
-
-@app.route('/vakantieverhuur/get', methods=['GET'])
+@app.route('/vakantie-verhuur/get', methods=['GET'])
 def get_lvv():
-    kind = None
-    identifier = None
-
     try:
-        identifier = get_kvk_number_from_request(request)
-        kind = 'kvk'
-    except SamlVerificationException:
-        return {'status': 'ERROR', 'message': 'Missing SAML token'}, 400
-    except KeyError:
-        # does not contain kvk number, might still contain BSN
-        pass
+        identifier = get_bsn_from_request(request)
+    except InvalidBSNException:
+        return {"status": "ERROR", "message": "Invalid BSN"}, 400
+    except SamlVerificationException as e:
+        return {"status": "ERROR", "message": e.args[0]}, 400
+    except Exception as e:
+        logger.error("Error", type(e), str(e))
+        return {"status": "ERROR", "message": "Unknown Error"}, 400
 
-    if kind == 'kvk':
-        return {
-            'status': "ERROR",
-            'content': 'no KVK support'
-        }, 400
-
-    if not identifier:
-        try:
-            identifier = get_bsn_from_request(request)
-            kind = 'bsn'
-        except InvalidBSNException:
-            return {"status": "ERROR", "message": "Invalid BSN"}, 400
-        except SamlVerificationException as e:
-            return {"status": "ERROR", "message": e.args[0]}, 400
-        except Exception as e:
-            logger.error("Error", type(e), str(e))
-            return {"status": "ERROR", "message": "Unknown Error"}, 400
-
-    # connection = LVVConnection(get_lvv_api_host(), get_lvv_key())
+    connection = LvvConnection(get_lvv_api_host(), get_lvv_key())
+    data = connection.get_data(identifier)
     return {
         'status': 'OK',
-        'content': [],
+        'content': data,
     }
 
 

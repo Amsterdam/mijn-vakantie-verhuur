@@ -6,12 +6,14 @@ from lvv.tests.mocks import RequestsMock
 
 
 class CleopatraConnectionTest(TestCase):
-    def setUp(self) -> None:
-        pass
+    TEST_BSN = "111222333"
 
     @patch("lvv.api.lvv.lvv_connection.requests", RequestsMock)
     def test_get_data(self):
         con = LvvConnection("http://localhost", "key")
-        con.get_data("123456789")
+        print(con.get_data(self.TEST_BSN))
 
-
+    @patch("lvv.api.lvv.lvv_connection.requests", RequestsMock)
+    def test_log_levels(self):
+        con = LvvConnection("http://localhost", "key")
+        print(">", con.get_data(self.TEST_BSN))
