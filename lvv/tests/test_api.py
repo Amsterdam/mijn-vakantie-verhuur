@@ -18,7 +18,7 @@ class HealthTest(FlaskServerTMATestCase):
         self.assertEqual(response.data, b"OK")
 
 
-@patch.dict(os.environ, {"LVV_API_HOST": "http://localhost"})
+@patch.dict(os.environ, {"LVV_HOST": "http://localhost"})
 @patch("lvv.api.lvv.lvv_connection.requests", RequestsMock)
 @patch("lvv.server.get_tma_certificate", lambda: server_crt)
 class ApiTest(FlaskServerTMATestCase):
