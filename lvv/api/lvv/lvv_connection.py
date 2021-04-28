@@ -26,14 +26,14 @@ class LvvConnection:
         return data
 
     def _bsn_to_registration_numbers(self, bsn):
-        url = f'{self.api_url}/ext/api/Registrations/bsn/{bsn}'
+        url = f'{self.api_url}Registrations/bsn/{bsn}'
         response = self._get(url)
         return [r['registrationNumber'] for r in response.json()]
 
     def _get_registrations(self, reg_numbers):
         registrations = []
         for reg_num in reg_numbers:
-            url = f"{self.api_url}/ext/api/Registrations/{reg_num}"
+            url = f"{self.api_url}Registrations/{reg_num}"
             response = self._get(url)
             data = response.json()
             registrations.append(self._transform(data))
