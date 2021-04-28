@@ -29,10 +29,10 @@ class RequestsMock:
     def get(url, headers):
         print("\n\n>>> ---------- GET\n", url, headers)
 
-        if url == "http://localhost/ext/api/Registrations/bsn/111222333":
+        if url == "http://localhost/Registrations/bsn/111222333":
             with open(FIXTURE_REGISTRATION_BSN_PATH) as fh:
                 return ResponseMock(fh.read())
-        elif url == "http://localhost/ext/api/Registrations/AAAAAAAAAAAAAAAAAAAA":
+        elif url == "http://localhost/Registrations/AAAAAAAAAAAAAAAAAAAA":
             with open(FIXTURE_REGISTRATION_ITEM_PATH) as fh:
                 return ResponseMock(fh.read())
         else:
