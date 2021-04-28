@@ -21,9 +21,31 @@ class LvvConnection:
         logger.debug(response.content)
         return response
 
+    def _extract_fields(self, source_data, target, fields):
+        for f in fields:
+            target[f["name"]] = source_data[f["name"]]
+
     def _transform(self, data):
         """ Transform a single registration to the frontend format. """
-        return data
+        fields = [
+            {"name": "registrationNumber"},
+        ]
+        house_fields = [
+            {"name": "street"},
+            {"name": "houseNumber"},
+            {"name": "houseLetter"},
+            {"name": "houseNumberExtension"},
+            {"name": "postalCode"},
+            {"name": "city"},
+            {"name": "shortName"},
+            {"name": "owner"},
+        ]
+
+        formatted_data = {}
+        self._extract_fields(data, formatted_data, fields)
+        self._extract_fields(data['rentalHouse'], formatted_data, house_fields)
+
+        return formatted_data
 
     def _bsn_to_registration_numbers(self, bsn):
         url = f'{self.api_url}Registrations/bsn/{bsn}'

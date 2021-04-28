@@ -33,8 +33,19 @@ class ApiTest(FlaskServerTMATestCase):
         response = self.client.get("/vakantie-verhuur/get", headers=SAML_HEADERS)
         self.assertEqual(response.status_code, 200)
 
-        reg_numbers = [i['registrationNumber'] for i in response.json['content']]
-        self.assertEqual(reg_numbers, ['AAAA AAAA AAAA AAAA AAAA'])
+        self.assertEqual(response.json['content'], [
+            {
+                'city': 'Amsterdam',
+                'houseLetter': None,
+                'houseNumber': '1',
+                'houseNumberExtension': None,
+                'owner': None,
+                'postalCode': '1012PN',
+                'registrationNumber': 'AAAA AAAA AAAA AAAA AAAA',
+                'shortName': 'Amstel',
+                'street': 'Amstel'
+            }
+        ])
 
     def test_invalid_bsn(self):
         SAML_HEADERS = self.add_digi_d_headers("1")
