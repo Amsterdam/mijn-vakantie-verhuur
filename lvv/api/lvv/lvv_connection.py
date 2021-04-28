@@ -38,7 +38,6 @@ class LvvConnection:
             {"name": "postalCode"},
             {"name": "city"},
             {"name": "shortName"},
-            {"name": "owner"},
         ]
 
         formatted_data = {}

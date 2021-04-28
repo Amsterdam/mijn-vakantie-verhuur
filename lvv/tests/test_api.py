@@ -39,7 +39,6 @@ class ApiTest(FlaskServerTMATestCase):
                 'houseLetter': None,
                 'houseNumber': '1',
                 'houseNumberExtension': None,
-                'owner': None,
                 'postalCode': '1012PN',
                 'registrationNumber': 'AAAA AAAA AAAA AAAA AAAA',
                 'shortName': 'Amstel',
