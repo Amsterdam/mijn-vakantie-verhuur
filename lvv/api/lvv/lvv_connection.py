@@ -50,7 +50,7 @@ class LvvConnection:
     def _bsn_to_registration_numbers(self, bsn):
         url = f'{self.api_url}Registrations/bsn/{bsn}'
         response = self._get(url)
-        return [r['registrationNumber'] for r in response.json()]
+        return [r['registrationNumber'].replace(' ', '') for r in response.json()]
 
     def _get_registrations(self, reg_numbers):
         registrations = []
