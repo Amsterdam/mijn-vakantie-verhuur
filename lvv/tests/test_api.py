@@ -42,7 +42,8 @@ class ApiTest(FlaskServerTMATestCase):
                 'postalCode': '1012PN',
                 'registrationNumber': 'AAAA AAAA AAAA AAAA AAAA',
                 'shortName': 'Amstel',
-                'street': 'Amstel'
+                'street': 'Amstel',
+                'agreementDate': '2021-01-01T10:47:44.6107122',
             }
         ])
 

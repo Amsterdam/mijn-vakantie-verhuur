@@ -29,6 +29,7 @@ class LvvConnection:
         """ Transform a single registration to the frontend format. """
         fields = [
             {"name": "registrationNumber"},
+            {"name": "agreementDate"}
         ]
         house_fields = [
             {"name": "street"},
