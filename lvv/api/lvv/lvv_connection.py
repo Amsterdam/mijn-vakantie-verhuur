@@ -21,6 +21,17 @@ class LvvConnection:
         logger.debug(response.content)
         return response
 
+    def _post(self, url, body):
+        headers = {
+            "X-Api-Key": self.api_key
+        }
+        response = requests.post(url, headers=headers, data=body)
+
+        logger.debug(url)
+        logger.debug(response.status_code)
+        logger.debug(response.content)
+        return response
+
     def _extract_fields(self, source_data, target, fields):
         for f in fields:
             target[f["name"]] = source_data[f["name"]]
@@ -48,14 +59,15 @@ class LvvConnection:
         return formatted_data
 
     def _bsn_to_registration_numbers(self, bsn):
-        url = f'{self.api_url}Registrations/bsn/{bsn}'
-        response = self._get(url)
+        url = f'{self.api_url}registrations/bsn'
+        body = bsn
+        response = self._post(url, body)
         return [r['registrationNumber'].replace(' ', '') for r in response.json()]
 
     def _get_registrations(self, reg_numbers):
         registrations = []
         for reg_num in reg_numbers:
-            url = f"{self.api_url}Registrations/{reg_num}"
+            url = f"{self.api_url}registrations/{reg_num}"
             response = self._get(url)
             data = response.json()
             registrations.append(self._transform(data))
