@@ -27,11 +27,17 @@ class ResponseMock:
 class RequestsMock:
     @staticmethod
     def get(url, headers):
-        if url == "http://localhost/Registrations/bsn/111222333":
-            with open(FIXTURE_REGISTRATION_BSN_PATH) as fh:
-                return ResponseMock(fh.read())
-        elif url == "http://localhost/Registrations/AAAAAAAAAAAAAAAAAAAA":
+        if url == "http://localhost/registrations/AAAAAAAAAAAAAAAAAAAA":
             with open(FIXTURE_REGISTRATION_ITEM_PATH) as fh:
                 return ResponseMock(fh.read())
         else:
             raise Exception(f"No fixture found for url: {url}")
+
+    @staticmethod
+    def post(url, headers, data):
+        if url == "http://localhost/registrations/bsn":
+            if data == '"111222333"':
+                with open(FIXTURE_REGISTRATION_BSN_PATH) as fh:
+                    return ResponseMock(fh.read())
+
+        raise Exception(f"No fixture found for url: {url} body: {data[0:500]}")
