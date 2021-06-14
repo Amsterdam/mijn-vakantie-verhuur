@@ -1,3 +1,4 @@
+import json
 import logging
 
 import requests
@@ -60,7 +61,7 @@ class LvvConnection:
 
     def _bsn_to_registration_numbers(self, bsn):
         url = f'{self.api_url}registrations/bsn'
-        body = bsn
+        body = json.dumps(bsn)
         response = self._post(url, body)
         return [r['registrationNumber'].replace(' ', '') for r in response.json()]
 

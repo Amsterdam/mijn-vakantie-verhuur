@@ -36,8 +36,8 @@ class RequestsMock:
     @staticmethod
     def post(url, headers, data):
         if url == "http://localhost/registrations/bsn":
-            if data == "111222333":
+            if data == '"111222333"':
                 with open(FIXTURE_REGISTRATION_BSN_PATH) as fh:
                     return ResponseMock(fh.read())
 
-        raise Exception(f"No fixture found for url: {url}")
+        raise Exception(f"No fixture found for url: {url} body: {data[0:500]}")
