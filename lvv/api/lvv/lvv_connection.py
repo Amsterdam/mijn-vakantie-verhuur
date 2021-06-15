@@ -24,7 +24,8 @@ class LvvConnection:
 
     def _post(self, url, body):
         headers = {
-            "X-Api-Key": self.api_key
+            "X-Api-Key": self.api_key,
+            "Content-Type": "application/json",
         }
         response = requests.post(url, headers=headers, data=body)
 
