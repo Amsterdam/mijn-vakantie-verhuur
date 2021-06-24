@@ -9,6 +9,12 @@ class CleopatraConnectionTest(TestCase):
     TEST_BSN = "111222333"
 
     @patch("lvv.api.lvv.lvv_connection.requests", RequestsMock)
+    def test_get_registration_numbers(self):
+        con = LvvConnection("http://localhost/", "key")
+        reg_numbers = con._bsn_to_registration_numbers(self.TEST_BSN)
+        self.assertEqual(reg_numbers, ['AAAAAAAAAAAAAAAAAAAA', 'BBBBBBBBBBBBBBBBBBBB'])
+
+    @patch("lvv.api.lvv.lvv_connection.requests", RequestsMock)
     def test_get_data(self):
         con = LvvConnection("http://localhost/", "key")
         result = con.get_data(self.TEST_BSN)

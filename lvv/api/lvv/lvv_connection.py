@@ -72,7 +72,9 @@ class LvvConnection:
             url = f"{self.api_url}registrations/{reg_num}"
             response = self._get(url)
             data = response.json()
-            registrations.append(self._transform(data))
+            registration = self._transform(data)
+            if registration['city'].lower() == 'amsterdam':
+                registrations.append(registration)
         return registrations
 
     def get_data(self, bsn):
