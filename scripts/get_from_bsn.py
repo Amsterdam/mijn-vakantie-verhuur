@@ -2,10 +2,8 @@ import logging
 from pprint import pprint
 from sys import argv
 
-from lvv.api.lvv.lvv_connection import LvvConnection
-from lvv.config import get_lvv_api_host, get_lvv_key
-
-logging.basicConfig(level=logging.DEBUG)
+from app.config import get_lvv_api_host, get_lvv_key
+from app.lvv_service import LvvConnection
 
 bsn = argv[1]
 

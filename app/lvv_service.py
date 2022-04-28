@@ -3,8 +3,6 @@ import logging
 
 import requests
 
-logger = logging.getLogger(__name__)
-
 
 class LvvConnection:
     def __init__(self, api_url, api_key):
@@ -12,14 +10,12 @@ class LvvConnection:
         self.api_key = api_key
 
     def _get(self, url):
-        headers = {
-            "X-Api-Key": self.api_key
-        }
+        headers = {"X-Api-Key": self.api_key}
         response = requests.get(url, headers=headers)
 
-        logger.debug(url)
-        logger.debug(response.status_code)
-        logger.debug(response.content)
+        logging.debug(url)
+        logging.debug(response.status_code)
+        logging.debug(response.content)
         return response
 
     def _post(self, url, body):
@@ -29,9 +25,9 @@ class LvvConnection:
         }
         response = requests.post(url, headers=headers, data=body)
 
-        logger.debug(url)
-        logger.debug(response.status_code)
-        logger.debug(response.content)
+        logging.debug(url)
+        logging.debug(response.status_code)
+        logging.debug(response.content)
         return response
 
     def _extract_fields(self, source_data, target, fields):
@@ -39,11 +35,8 @@ class LvvConnection:
             target[f["name"]] = source_data[f["name"]]
 
     def _transform(self, data):
-        """ Transform a single registration to the frontend format. """
-        fields = [
-            {"name": "registrationNumber"},
-            {"name": "agreementDate"}
-        ]
+        """Transform a single registration to the frontend format."""
+        fields = [{"name": "registrationNumber"}, {"name": "agreementDate"}]
         house_fields = [
             {"name": "street"},
             {"name": "houseNumber"},
@@ -56,15 +49,15 @@ class LvvConnection:
 
         formatted_data = {}
         self._extract_fields(data, formatted_data, fields)
-        self._extract_fields(data['rentalHouse'], formatted_data, house_fields)
+        self._extract_fields(data["rentalHouse"], formatted_data, house_fields)
 
         return formatted_data
 
     def _bsn_to_registration_numbers(self, bsn):
-        url = f'{self.api_url}registrations/bsn'
+        url = f"{self.api_url}registrations/bsn"
         body = json.dumps(bsn)
         response = self._post(url, body)
-        return [r['registrationNumber'].replace(' ', '') for r in response.json()]
+        return [r["registrationNumber"].replace(" ", "") for r in response.json()]
 
     def _get_registrations(self, reg_numbers):
         registrations = []
@@ -73,7 +66,7 @@ class LvvConnection:
             response = self._get(url)
             data = response.json()
             registration = self._transform(data)
-            if registration['city'].lower() == 'amsterdam':
+            if registration["city"].lower() == "amsterdam":
                 registrations.append(registration)
         return registrations
 

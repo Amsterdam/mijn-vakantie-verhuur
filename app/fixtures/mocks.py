@@ -1,10 +1,12 @@
 import json
 import os
 
-FIXTURE_PATH = os.path.join(os.path.dirname(__file__), 'fixtures')
-FIXTURE_REGISTRATION_BSN_PATH = os.path.join(FIXTURE_PATH, 'registration_bsn.json')
-FIXTURE_REGISTRATION_ITEM_PATH = os.path.join(FIXTURE_PATH, 'registration_item.json')
-FIXTURE_REGISTRATION_ITEM2_PATH = os.path.join(FIXTURE_PATH, 'registration_item2.json')
+from app.config import BASE_PATH
+
+FIXTURE_PATH = os.path.join(BASE_PATH, "fixtures")
+FIXTURE_REGISTRATION_BSN_PATH = os.path.join(FIXTURE_PATH, "registration_bsn.json")
+FIXTURE_REGISTRATION_ITEM_PATH = os.path.join(FIXTURE_PATH, "registration_item.json")
+FIXTURE_REGISTRATION_ITEM2_PATH = os.path.join(FIXTURE_PATH, "registration_item2.json")
 
 
 def get_fixture_registration_bsn():
