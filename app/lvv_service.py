@@ -1,6 +1,4 @@
 import json
-import logging
-
 import requests
 
 
@@ -12,10 +10,8 @@ class LvvConnection:
     def _get(self, url):
         headers = {"X-Api-Key": self.api_key}
         response = requests.get(url, headers=headers)
+        response.raise_for_status()
 
-        logging.debug(url)
-        logging.debug(response.status_code)
-        logging.debug(response.content)
         return response
 
     def _post(self, url, body):
@@ -24,10 +20,8 @@ class LvvConnection:
             "Content-Type": "application/json",
         }
         response = requests.post(url, headers=headers, data=body)
+        response.raise_for_status()
 
-        logging.debug(url)
-        logging.debug(response.status_code)
-        logging.debug(response.content)
         return response
 
     def _extract_fields(self, source_data, target, fields):
