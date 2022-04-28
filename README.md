@@ -9,23 +9,14 @@ A REST API which discloses the Landelijke Vakantie Verhuur data
 
 1. Clone repo and `cd` in
 2. Create a virtual env and activate
-3. Run `pip install -r lvv/requirements.txt`
+3. Run `pip install -r requirements.txt`
 4. Set environment variables:
-   - `export FLASK_APP=lvv/api/server.py`
-   - `export TMA_CERTIFICATE=<path to certificate>`
+   - `export FLASK_APP=app/server.py`
     
 5. Run `flask run`
-
-### Deployment
-
-1. Make sure the env vars described in 'Local development' are set
-3. Run `docker-compose up --build`
-4. Get '/status/health' to check if the API is up and running
+6. `curl http://localhost:5000` to see if api is up-and-running
 
 ### Testing
+In your env created for Local development
 
-1. Clone repo
-2. Create a virtual env and activate
-3. Run `pip install -r lvv/requirements.txt`
-4. `cd lvv`
-5. Run `python -m unittest`
+1. Run `python -m unittest`
