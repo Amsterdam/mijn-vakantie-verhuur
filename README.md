@@ -14,7 +14,7 @@ A REST API which discloses the Landelijke Vakantie Verhuur data
    - `export FLASK_APP=app/server.py`
     
 5. Run `flask run`
-6. `curl http://localhost:5000` to see if api is up-and-running
+6. `curl http://localhost:5000/status/health` to see if api is up-and-running
 
 ### Testing
 In your env created for Local development
