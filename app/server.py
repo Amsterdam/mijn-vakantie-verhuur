@@ -1,7 +1,7 @@
 import logging
 
 import sentry_sdk
-from flask import Flask, request
+from flask import Flask
 from requests import HTTPError
 from sentry_sdk.integrations.flask import FlaskIntegration
 
